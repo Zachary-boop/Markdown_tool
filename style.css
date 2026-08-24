@@ -1,0 +1,62 @@
+/* Base Container */
+.file-tree {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* Reset and indent nested folders */
+.file-tree ul {
+    list-style-type: none;
+    padding-left: 20px;
+    margin: 0;
+    position: relative;
+}
+
+/* Vertical branch line for connecting sub-folders/files */
+.file-tree ul::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 7px;
+    bottom: 12px;
+    border-left: 1px solid #b8b8b8;
+}
+
+/* Individual list items */
+.file-tree li {
+    margin: 0;
+    padding: 3px 0 3px 15px;
+    position: relative;
+}
+
+/* Horizontal branch lines pointing to folders/files */
+.file-tree li::before {
+    content: "";
+    position: absolute;
+    top: 13px;
+    left: -8px;
+    width: 15px;
+    height: 1px;
+    border-top: 1px solid #b8b8b8;
+}
+
+/* Stops the vertical line at the last item of a directory level */
+.file-tree li:last-child::before {
+    background: transparent;
+    height: 1px;
+}
+
+/* Folder styling */
+.folder {
+    font-weight: 600;
+}
+
+.folder::before {
+    content: " ";
+}
+
+/* File styling */
+.file::before {
+    content: " ";
+}
