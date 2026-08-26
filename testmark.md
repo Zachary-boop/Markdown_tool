@@ -5,11 +5,7 @@ Extention markdown pour sortire du text d'un fichier autre ou lien.
 ## Project setup
 This project is based on the mistletoe library.
 
-!! C:\Users\royza\Desktop\Labo\Prog4\Markdown_tool
+!! \ 3
 
 - a
     - d
-
-!! ds
-
-!! 4

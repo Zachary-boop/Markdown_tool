@@ -6,17 +6,53 @@ from Code.file import build_tree
 SHORTCUT = "!!"
 
 
-def build_html(tree : list) -> str:
-    html = '''<body> <div class="file-tree"> <ul>'''
-    for object in tree:
-        if type(object) == list:
-            print('file')
-            html += f'<li><span class="file">{object}</span></li>'
-        if type(object) == dict:
-            print('dict')
+def build_html(tree: dict | list | str) -> str:
+    html = ''
     
-    html += '<ul> </div> </body>'
-    pass
+    # 1. Cas d'une liste
+    if isinstance(tree, list):
+        for item in tree:
+            # On rappelle la fonction pour gérer si l'item est un dictionnaire, sous-liste ou str
+            html += f'<li><span class="file">{item}</span></li>' 
+
+            
+    # 2. Cas d'une chaîne
+    elif isinstance(tree, str):
+        html += f'<li><span class="file">{tree}</span></li>' 
+
+    # 3. Cas d'un dictionnaire 
+    elif isinstance(tree, dict):
+        for folder_name, content in tree.items():
+            if isinstance(content,list):
+                html += f'<li><span class="folder">{folder_name}</span><ul>'
+                html += build_html(content) # On passe le contenu (liste, dict, etc.)
+                html += '</ul></li>'
+            if isinstance(content,str):
+                html += f'<li><span class="file">{content}</span></li>' 
+            if isinstance(content,dict):
+                html += f'<li><span class="folder">{folder_name}</span><ul>'
+                html += build_html(content) # On passe le contenu (liste, dict, etc.)
+                html += '</ul></li>'
+    return html
+
+def render_page(tree_dict):
+    # Appel de la fonction récursive corrigée au message précédent
+    corps_arbre = build_html(tree_dict) 
+    
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="file-tree">
+        <ul>
+            {corps_arbre}
+        
+    </div>
+</body>
+</html>"""
 
 with open('testmark.md', 'r') as fin:
     html_content = mistletoe.markdown(fin)
@@ -52,16 +88,24 @@ while True:
     element = soup.find(string=re.compile(SHORTCUT))
     if element is None:
         break
-    parameter = element[3:]
-    print(parameter)
+    parameters = element[1+len(SHORTCUT):]
+    path,depth = parameters.split(' ')
+    print(path,depth)
     try:
-        tree = build_tree(parameter,2)
+        print(f'\npath : {path}')
+        print(f'depth : {depth}\n')
+        try : 
+            depth = int(depth)
+        except:
+            depth = 1
+        tree = build_tree(path,depth)
         print(tree)
-        build_html(tree)
+        html = render_page(tree)
+        
     except:
         html = ''
         pass
-    nouveau_html = BeautifulSoup("e", "html.parser")
+    nouveau_html = BeautifulSoup(html, "html.parser")
     
     balise_parente = element.parent
     balise_parente.clear()

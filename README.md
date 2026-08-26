@@ -1,10 +1,10 @@
 # Markdown_tool
 
 ## Project Overview
-Extention markdown pour sortire du text d'un fichier autre ou lien.
+Post-processeur commonmark ajoutant la fonctionallite de créer un arbre complet du folder avec seulement son path.
 ## Project setup
 This project is based on the mistletoe library. 
-!!! all
+
 ## Team
 * Product owner : Philippe Gauthier
 * Scrum Master : Amélie Sarrazin

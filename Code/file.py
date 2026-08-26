@@ -2,6 +2,8 @@ from pathlib import Path
 import pprint
 
 def build_tree(path, max_depth, current_depth=1):
+    if path in [r'\\',r'\\'[0]]:
+        path = r''
     path = Path(path)
     
     if path.is_file():
@@ -25,8 +27,8 @@ def build_tree(path, max_depth, current_depth=1):
     return tree
 
 if __name__ == "__main__":
-    mypath = Path(r'C:\Users\royza\Desktop\Labo\Prog4\Markdown_tool')
-    profond_max = 2
+    mypath = Path(r'')
+    profond_max = 100
 
     dossier_arbre = build_tree(mypath, max_depth=profond_max)
     pprint.pprint(dossier_arbre)
