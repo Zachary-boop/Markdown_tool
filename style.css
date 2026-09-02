@@ -20,7 +20,7 @@
     top: 0;
     left: 7px;
     bottom: 12px;
-    border-left: 1px solid #b8b8b8;
+    border-left: 2px solid #b8b8b8;
 }
 
 /* Individual list items */
@@ -38,7 +38,7 @@
     left: -8px;
     width: 15px;
     height: 1px;
-    border-top: 1px solid #b8b8b8;
+    border-top: 2px solid #b8b8b8;
 }
 
 /* Stops the vertical line at the last item of a directory level */
@@ -53,10 +53,16 @@
 }
 
 .folder::before {
-    content: " ";
+    content: "📁 ";
+}
+
+.element::before {
+  content: url('your-image.png');
+  margin-right: 8px;           /* Adds space between the image and text */
+  vertical-align: middle;      /* Aligns the icon nicely with text */
 }
 
 /* File styling */
 .file::before {
-    content: " ";
+    content: "📄 ";
 }

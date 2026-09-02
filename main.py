@@ -2,8 +2,33 @@ import mistletoe
 from bs4 import BeautifulSoup
 import re
 from Code.file import build_tree
+from pathlib import Path
 
 SHORTCUT = "!!"
+def build_tree(path, max_depth, current_depth=1):
+    if path in [r'\\',r'\\'[0]]:
+        path = r''
+    path = Path(path)
+    
+    if path.is_file():
+        return path.name
+        
+    if current_depth == max_depth:
+        # On filtre les éléments cachés à la profondeur maximale
+        return [f.name for f in path.iterdir() if not f.name.startswith('.')]
+        
+    tree = {}
+    for item in path.iterdir():
+        # ICI : On ignore complètement si le nom commence par un point
+        if item.name.startswith('.'):
+            continue
+            
+        if item.is_dir():
+            tree[item.name] = build_tree(item, max_depth, current_depth + 1)
+        else:
+            tree[item.name] = item.name
+            
+    return tree
 
 
 def build_html(tree: dict | list | str) -> str:
