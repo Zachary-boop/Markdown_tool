@@ -3,4 +3,4 @@
 * Test du code
 * Debogage
 * Documentation du code
-* DOcumentation du projet
+* Dcumentation du projet

@@ -56,12 +56,6 @@
     content: "📁 ";
 }
 
-.element::before {
-  content: url('your-image.png');
-  margin-right: 8px;           /* Adds space between the image and text */
-  vertical-align: middle;      /* Aligns the icon nicely with text */
-}
-
 /* File styling */
 .file::before {
     content: "📄 ";

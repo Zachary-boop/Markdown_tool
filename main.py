@@ -19,8 +19,8 @@ def build_tree(path, max_depth, current_depth=1):
         
     tree = {}
     for item in path.iterdir():
-        # ICI : On ignore complètement si le nom commence par un point
-        if item.name.startswith('.'):
+
+        if item.name.startswith('.'): #ignore folders with . before their name
             continue
             
         if item.is_dir():
