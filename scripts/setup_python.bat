@@ -1,4 +1,7 @@
 @echo off
+
+cd /d "%~dp0"
+
 echo Upgrading pip...
 python -m pip install --upgrade pip
 
