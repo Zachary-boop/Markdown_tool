@@ -23,3 +23,16 @@ La commande a deux paramètres
 
 Si le code n'a pas les permission pour accéder à un folder, il ne va rien affiché
 
+## Dépendences
+Le projet à besoin des libraries 
+* mistletoe
+* bs4
+
+Pour les installé, un script .bat à été fait
+```bash
+cd Path/to/folder/scripts
+setup_python.bat
+```
+Sinon il peut être exécuté avec double click dans l'explorateur de fichier.
+
+Il est aussi possible d'installé à la main la list de dépendance dans le fichier requirement.txt
