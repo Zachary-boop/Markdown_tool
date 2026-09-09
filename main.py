@@ -1,7 +1,8 @@
 import mistletoe
 import re
 from pathlib import Path
-from textwrap import dedent
+
+
 SHORTCUT = "!!"
 FILE = "testmark.md"
 
