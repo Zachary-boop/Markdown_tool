@@ -106,8 +106,13 @@ last_index = 0
 for index in indexs: # Add everything to the html until the last command
     
     parameters = CommonMark_content[index][1 + len(SHORTCUT):]
-    path, depth = parameters.strip().split(' ')
-    
+
+
+    path = parameters.strip().split(' ')[0]
+    try:
+        depth = parameters.strip().split(' ')[1]
+    except IndexError:
+        depth = 1
     
     tree = build_tree(path, depth)
     
