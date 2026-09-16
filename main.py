@@ -2,11 +2,115 @@ import mistletoe
 import re
 from pathlib import Path
 from textwrap import dedent
+from mistletoe.block_token import Heading
 
 
 SHORTCUT = "!!"
 FILE = "testmark.md"
 OUTPUT_FILE = "output.html"
+
+def CenterText(md_content, New_file):
+    found = False  # Variable globale pour suivre l'état de la recherche du motif
+    # Ouverture du document Markdown en mode lecture pour inspection initiale
+    #print(md_content)
+    lines = md_content.splitlines('\n')
+    print(lines)
+
+    # Ouverture du document Markdown en mode écriture pour modification
+    New_Doc = open(New_file, "w")
+    for Symbol in lines:
+        Shortcut = '()'  # Recherche du motif à remplacer
+        if Symbol.find(Shortcut) != -1 and (found == False): # -1 signifie que le motif n'a pas été trouvé
+            Symbol = Symbol.replace(Shortcut, '<div align="center">\n', 1) # Remplacement des balises Markdown par des balises HTML    
+            # add an empty line
+            found = True  # Indique que le motif a été trouvé et remplacé
+
+        elif Symbol.find(Shortcut) != -1 and (found == True): # -1 signifie que le motif n'a pas été trouvé
+            Symbol = Symbol.replace(Shortcut, '</div>\n', 1) # Remplacement des balises Markdown par des balises HTML
+            found = False
+
+        New_Doc.write(Symbol)
+    New_Doc.close()
+    # Envoie du document Markdown modifié à la fonction de rendu HTML
+    with open(New_file, 'r') as fin:
+        rendered = mistletoe.markdown(fin)  
+        print(rendered)
+        fin.close()
+
+    with open(New_file, 'r') as fin:
+        output =  fin.readlines()
+        return ''.join(output)
+
+    # Écriture du rendu HTML dans un fichier de sortie
+    with open('Exemple.html', 'w') as fout:
+        fout.write(rendered)
+        fout.close()
+
+
+def creer_table_matiere(fichier):
+
+    # Lire le fichier
+    with open(fichier, "r", encoding="utf-8") as f:
+        texte = f.read()
+
+    # Vérifier si le marqueur existe
+    if "**contenu:**" not in texte.lower():
+        print("Aucun **contenu:** détecté.")
+        return
+
+    print("**contenu:** détecté.")
+
+    table = "## Table des matières\n\n"
+
+    # Parser le document
+    document = mistletoe.Document(texte)
+
+    for element in document.children:
+
+        if isinstance(element, Heading):
+
+            if element.level == 2 or element.level == 3 or element.level == 4 or element.level == 5 or element.level == 6:
+
+                titre = ""
+
+                for enfant in element.children:
+                    if hasattr(enfant, "content"):
+                        titre += enfant.content
+
+                lien = titre.lower().replace(" ", "-")
+
+                # Ajouter le titre dans la table
+                if element.level == 1:
+                    table += f"- [{titre}](#{lien})\n"
+
+                elif element.level == 2:
+                    table += f"  - [{titre}](#{lien})\n"
+
+                elif element.level == 3:
+                    table += f"    - [{titre}](#{lien})\n"
+
+                elif element.level == 4:
+                    table += f"      - [{titre}](#{lien})\n"
+
+                elif element.level == 5:
+                    table += f"        - [{titre}](#{lien})\n"
+
+                elif element.level == 6:
+                    table += f"          - [{titre}](#{lien})\n"
+
+    # Insérer la table après le marqueur
+    texte = texte.replace(
+        "**contenu:**",
+        "" + table,
+        1
+    )
+
+    # Sauvegarder
+    with open(fichier, "w", encoding="utf-8") as f:
+        f.write(texte)
+
+    print("Table des matières créée.")
+
 
 def checklistMD_from_string(md_content):
     """
@@ -111,10 +215,16 @@ def render_tree_block(tree_dict):
     return f'<div class="file-tree"><ul>{corps_arbre}</ul></div>'
 
 
-with open(FILE, "r", encoding="utf-8") as fin:
-    markdown_lines = fin.readlines()
+
 
 if __name__ == "__main__":
+
+
+    creer_table_matiere(FILE)
+
+    with open(FILE, "r", encoding="utf-8") as fin:
+        markdown_lines = fin.readlines()
+        
     processed_lines = []
     for line in markdown_lines:
         if line.startswith(SHORTCUT):
@@ -142,7 +252,12 @@ if __name__ == "__main__":
 
     #html_body_content = mistletoe.markdown(full_markdown_content)
     full_markdown_content = checklistMD_from_string(full_markdown_content)
+
+    full_markdown_content = CenterText(full_markdown_content,"center.md")
+
+
     html_body_content = mistletoe.markdown(full_markdown_content)
+    
 
     # Add the needed headers
     final_document = f"""<!DOCTYPE html>
