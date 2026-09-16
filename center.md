@@ -1,6 +1,6 @@
 # Markdown_tool
 
-## Table des matiÃ¨res
+## Table des matières
 
   - [Project Overview](#project-overview)
   - [Project setup](#project-setup)
