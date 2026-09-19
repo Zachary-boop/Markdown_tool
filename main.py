@@ -137,8 +137,15 @@ def checklistMD_from_string(md_content):
             # On crée la structure HTML pour la checkbox
             new_line = f'<input type="checkbox"> <label>{clean_text}</label><br>'
             modifiedLines.append(new_line)
+        else if line.strip().startswith('\\'):
+            # On retire le "\" et les espaces superflus autour du texte
+            clean_text = line.strip().lstrip('\\')
+
+            # On crée la structure HTML pour la checkbox
+            new_line = f'<input type="checkbox" checked> <label>{clean_text}</label><br>'
+            modifiedLines.append(new_line)
         else:
-            # Si la ligne ne commence pas par "/", on la laisse intacte
+            # Si la ligne ne commence pas par "/" ou "\", on la laisse intacte
             modifiedLines.append(line)
 
     # On rassemble les lignes avec un saut de ligne
